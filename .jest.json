@@ -1,0 +1,7 @@
+{
+  "name": "git-gud-server",
+  "testPathIgnorePatterns": [
+    "/node_modules/",
+    "/client/"
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "name": "example-create-react-app-express",
+  "version": "1.0.0",
+  "scripts": {
+    "client": "cd client && npm start",
+    "server": "nodemon app.js",
+    "dev": "concurrently --kill-others-on-fail \"npm server\" \"npm client\"",
+    "lint": "eslint .",
+    "test": "jest --config=\".jest.json\""
+  },
+  "dependencies": {
+    "ajv": "^6.5.4",
+    "nedb": "^1.8.0",
+    "webpack": "^4.25.1",
+    "webpack-dev-server": "^3.1.10"
+  },
+  "devDependencies": {
+    "concurrently": "^3.5.0",
+    "eslint": "^5.6.1",
+    "jest": "^23.6.0"
+  }
+}
