@@ -8,22 +8,23 @@ import Basic from './components/basic/basic';
 
 import api from './util/api.js';
 
-window.api = api;
-
 class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { data: null };
+    this.state = { data: null, active: 'humidity' };
 
     socket.on('data-point', data => this.withNewData(data));
   }
 
+  activate(active) {
+    this.setState({ active });
+  }
+
   withNewData(data) {
-    const { humidity: reading } = data;
+    const { [this.state.active]: reading } = data;
 
     document.title = `${reading.value} ${reading.unit}`;
-
     this.setState({ data });
   }
 
@@ -32,13 +33,21 @@ class App extends React.Component {
       return null;
     }
 
+    const isActive = key => this.state.active === key;
+
     return (
       <div>
         {
           Object
             .entries(this.state.data)
             .map(([ key, { value, unit } ]) => (
-              <p key={key}>{key}: {value} {unit}</p>
+              <p key={key} className={isActive(key) ? 'active' : null}>
+                <a
+                  href="#"
+                  onClick={() => this.activate(key)}
+                >{isActive(key) ? '🔥' : '❄️'}</a>
+                {key}: {value} {unit}
+              </p>
             ))
         }
       </div>

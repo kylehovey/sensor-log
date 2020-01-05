@@ -1,6 +1,11 @@
 const express = require('express');
 const bodyParser = require('body-parser');
+
+const ModelStore = require('./app_modules/models/model.js');
+const config = require('./config/schemas/models/sensorPoint.js');
 const api = require('./app_modules/express/routes/api');
+
+const SensorPoint = new ModelStore(config);
 
 const app = express();
 const server = require('http').createServer(app);
@@ -16,7 +21,11 @@ const parser = new Readline();
 serialPort.pipe(parser);
 
 parser.on('data', data => {
-  io.emit('data-point', JSON.parse(data));
+  const parsed = JSON.parse(data);
+
+  SensorPoint.create(parsed)
+
+  io.emit('data-point', parsed);
 });
 
 app.use(bodyParser.json());

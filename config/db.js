@@ -1,5 +1,5 @@
 module.exports = {
-  path: './db/',
+  path: '/home/speleo/blue/SensorData/',
   options: {
     autoload: true
   }
