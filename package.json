@@ -11,6 +11,9 @@
   "dependencies": {
     "ajv": "^6.5.4",
     "nedb": "^1.8.0",
+    "serialport": "^8.0.6",
+    "socket.io": "^2.3.0",
+    "uuid": "^3.3.3",
     "webpack": "^4.25.1",
     "webpack-dev-server": "^3.1.10"
   },
