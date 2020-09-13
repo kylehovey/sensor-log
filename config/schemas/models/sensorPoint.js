@@ -37,12 +37,33 @@ module.exports =  {
         min: 30e3,
         max: 110e3,
       }),
+      pm10: Reading({
+        min: 0,
+        max: 100e3,
+      }),
+      pm25: Reading({
+        min: 0,
+        max: 100e3,
+      }),
+      pm100: Reading({
+        min: 0,
+        max: 100e3,
+      }),
       humidity: Reading({
         min: 0,
         max: 100,
       }),
     },
-    required: ['CO2', 'TVOC', 'temperature', 'pressure', 'humidity'],
+    required: [
+      'CO2',
+      'TVOC',
+      'temperature',
+      'pressure',
+      'pm10',
+      'pm25',
+      'pm100',
+      'humidity',
+    ],
     additionalProperties: false
   },
   id: () => +(new Date),
