@@ -28,37 +28,42 @@ class App extends React.Component {
     this.setState({ data });
   }
 
+  isActive(key) {
+    return this.state.active === key;
+  }
+
   get stats() {
     if (this.state.data === null) {
       return null;
     }
 
-    const isActive = key => this.state.active === key;
-
-    return (
-      <div>
-        {
-          Object
-            .entries(this.state.data)
-            .map(([ key, { value, unit } ]) => (
-              <p key={key} className={isActive(key) ? 'active' : null}>
-                <a
-                  href="#"
-                  onClick={() => this.activate(key)}
-                >{isActive(key) ? '🔥' : '❄️'}</a>
-                {key}: {value} {unit}
-              </p>
-            ))
-        }
-      </div>
-    );
+    return Object.entries(this.state.data)
+      .map(([ key, { value, unit } ]) => (
+        <li key={key} className={this.isActive(key) ? 'active' : null}>
+          <a
+            href="#"
+            onClick={() => this.activate(key)}
+          >
+            <span className="name">{key}:</span>
+            <span className="value">{value} {unit}</span>
+          </a>
+        </li>
+      ));
   }
 
   render() {
     return (
-      <div>
-        <h1>Tomahna Environment Statistics</h1>
-        {this.stats}
+      <div className="container">
+        <div className="content">
+          <div className="main">
+            <div className="description">
+              <h2>Tomahna Environment Statistics</h2>
+            </div>
+            <ul className="stats-list">
+              {this.stats}
+            </ul>
+          </div>
+        </div>
       </div>
     );
   }
