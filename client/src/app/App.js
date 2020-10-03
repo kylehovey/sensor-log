@@ -4,7 +4,7 @@ import io from 'socket.io-client';
 const socket = io('/');
 
 import '../style/App.css';
-import Basic from './components/basic/basic';
+import StatsList from './components/stats_list';
 
 import api from './util/api.js';
 
@@ -12,13 +12,9 @@ class App extends React.Component {
   constructor(props) {
     super(props);
 
-    this.state = { data: null, active: 'humidity' };
+    this.state = { data: null, active: 'pm25' };
 
     socket.on('data-point', data => this.withNewData(data));
-  }
-
-  activate(active) {
-    this.setState({ active });
   }
 
   withNewData(data) {
@@ -26,29 +22,6 @@ class App extends React.Component {
 
     document.title = `${reading.value} ${reading.unit}`;
     this.setState({ data });
-  }
-
-  isActive(key) {
-    return this.state.active === key;
-  }
-
-  get stats() {
-    if (this.state.data === null) {
-      return null;
-    }
-
-    return Object.entries(this.state.data)
-      .map(([ key, { value, unit } ]) => (
-        <li key={key} className={this.isActive(key) ? 'active' : null}>
-          <a
-            href="#"
-            onClick={() => this.activate(key)}
-          >
-            <span className="name">{key}:</span>
-            <span className="value">{value} {unit}</span>
-          </a>
-        </li>
-      ));
   }
 
   render() {
@@ -59,9 +32,11 @@ class App extends React.Component {
             <div className="description">
               <h2>Tomahna Environment Statistics</h2>
             </div>
-            <ul className="stats-list">
-              {this.stats}
-            </ul>
+            <StatsList
+              active={this.state.active}
+              onChange={active => this.setState({ active })}
+              data={this.state.data}
+            />
           </div>
         </div>
       </div>
