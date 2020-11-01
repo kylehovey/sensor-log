@@ -1,5 +1,6 @@
 module.exports = {
-  basicRequest: async (locals, name) => {
-    return `The name is ${name}.`;
-  }
+  allData: async ({ SensorPoint }) => {
+    return SensorPoint.read();
+  },
+  current: ({ recent }) => recent,
 };

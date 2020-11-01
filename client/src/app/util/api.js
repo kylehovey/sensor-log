@@ -19,11 +19,16 @@ import { postRequest, getRequest } from './requests';
  * the file will take care of the rest.
  */
 const commands = {
-  basicRequest: {
+  allData: {
     method: 'GET',
-    command: 'basicRequest',
-    genData: (name) => ({ name })
-  }
+    command: 'allData',
+    genData: () => ({})
+  },
+  current: {
+    method: 'GET',
+    command: 'current',
+    genData: () => ({}),
+  },
 };
 
 const unwrap = req => req

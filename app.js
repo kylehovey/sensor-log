@@ -14,7 +14,7 @@ const port = process.env.PORT || 5000;
 
 const SerialPort = require('serialport');
 const Readline = require('@serialport/parser-readline');
-const serialPath = '/dev/serial/by-id/usb-Arduino_LLC_Arduino_Leonardo-if00';
+const serialPath = '/dev/serial/by-id/usb-Arduino_LLC_Arduino_Micro-if00';
 const serialPort = new SerialPort(serialPath, { baudRate: 9600 });
 
 const parser = new Readline();
@@ -52,25 +52,32 @@ const transform = (data) => Object
     },
   }), {});
 
-const extras = [
-];
-
+const recentRef = { current: null };
 parser.on('data', data => {
-  const parsed = JSON.parse(data);
+  const pm25Value = parseInt(data);
 
-  SensorPoint.create(parsed)
+  if (!isNaN(pm25Value)) {
+    const payload = {
+      pm25: {
+        unit: 'µg/m³',
+        value: pm25Value,
+      }
+    };
 
-  io.emit('data-point', {
-    ...transform(parsed),
-    ...extras.reduce((acc, fn) => ({
-      ...acc,
-      ...fn(parsed),
-    }), {})
-  });
+    recentRef.current = payload;
+    SensorPoint.create(payload);
+
+    io.emit('data-point', payload);
+  }
 });
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
+app.use((req, res, next) => {
+  res.locals.SensorPoint = SensorPoint;
+  res.locals.recent = recentRef.current;
+  next();
+});
 app.use('/api', api);
 
 /* eslint-disable-next-line no-console */

@@ -4,7 +4,8 @@ const router = express.Router();
 
 const ajv = new Ajv();
 const {
-  basicRequest
+  allData,
+  current,
 } = require('../../handlers/apiHandlers.js');
 
 /**
@@ -15,18 +16,26 @@ const commands = {
   POST: {
   },
   GET: {
-    basicRequest: {
-      genArgs: ({ name }) => [name],
-      handler: basicRequest,
+    allData: {
+      genArgs: ({}) => [],
+      handler: allData,
       schema: {
         type: 'object',
-        properties: {
-          name: { type: 'string' }
-        },
-        required: ['name'],
+        properties: {},
+        required: [],
         additionalProperties: false
       }
-    }
+    },
+    current: {
+      genArgs: ({}) => [],
+      handler: current,
+      schema: {
+        type: 'object',
+        properties: {},
+        required: [],
+        additionalProperties: false
+      }
+    },
   }
 };
 
